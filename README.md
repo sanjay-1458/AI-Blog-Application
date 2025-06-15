@@ -136,7 +136,26 @@ Now a nested routing is implemented for all admin pages.
 
 If we visit the `/admin` then `Layout` is rendered and inside layout `Dashboard` is rendered due to the `index` property., when `index` is used the URL will not chnage to any thing. To use nested routing `<Outlet/>` is required inside the `Layout` component as it will render the inner pages.
 
-Layout page conatins navbar, and side bar which denotes the pages and Outlet to render them as place holder. The login page is created using controlled input.
+Layout page conatins navbar, and side bar which denotes the pages and Outlet to render them as place holder. The login page is created using controlled input. And the table for comments is used as component due to their repetetive need. `quill` module is used for rich text in the `Blog description` where we use AI to generate the content.
+
+Used the state `category` to save the blog category from the dropdown.
+```
+<select
+  onChange={(e) => setCategory(e.target.value)}
+  name="category"
+>
+  <option value="" selected>
+    Select Category
+  </option>
+  {blogCategories.map((item, index) => {
+    return (
+      <option key={index} value={`item`}>
+        {item}
+      </option>
+    );
+  })}
+</select>
+```
 
 #### Routing
 
@@ -156,6 +175,9 @@ Layout page conatins navbar, and side bar which denotes the pages and Outlet to 
 ```
 
 `useNavigate()` is used for navigation to another route and is useful when we perform some logic before navigation. Navigation is triggered by logic.
+
+
+## Server / Backend
 
 
 ## Git Setup

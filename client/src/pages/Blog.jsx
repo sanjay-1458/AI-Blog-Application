@@ -11,7 +11,6 @@ function Blog() {
   const [comment,setComment]=useState([]);
   const fetchBlogData = async () => {
     const currData = blog_data.find((item) => item._id === id);
-    console.log(currData);
     setData(currData);
   };
   const addComment=async(e)=>{
