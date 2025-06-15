@@ -108,6 +108,56 @@ User can subscribe to get the latest blog using their emaid id.
 Footer contains copyright and 4 `div` for presenting the links and the website logo.
 
 
+### Blog Page
+
+For displaying the content of the blog, the data is stored in `blog_data` which is array of objects. And when we click on any blog items we are navigated to the `Blog` page where the URL is use to diaply the blog as URL is same as `_id`. Fetching the id from URL `const {id}=useParams();` and using a state `data` to store the content of the particular blog `const [data,setData]=useState(null);`
+
+Now looping the entire blog to find the blog item whose id matches the URL using `async` and `useEffect` to fetch the content.
+
+Used moment package for formatting the date `<p>Published on {Moment(data.createdAt).format('MMMM Do YYYY')} </p>`. For comment create new state `comment`: `const [comment,setComment]=useState([]);` and a state is used for a controlled input.
+
+### Admin
+
+Admin has access to 4 pages `Dashboard`, `Add blogs`, `Blog list`, `Comments` with additional login component. Each 4 pages share the same navbar thus create a centralized layout for the same.
+
+Now a nested routing is implemented for all admin pages.
+```
+<Routes>
+  <Route path='/' element={<Home/>}/>
+  <Route path='/blog/:id' element={<Blog/>}/>
+  <Route path='/admin' element={<Layout/>}>
+    <Route index element={<Dashboard/>}></Route>
+    <Route path='addBlog' element={<AddBlog></AddBlog>}></Route>
+    <Route path='comment' element={<Comment/>}></Route>
+    <Route path='listblog' element={<ListBlog/>}></Route>
+  </Route>
+</Routes>
+```
+
+If we visit the `/admin` then `Layout` is rendered and inside layout `Dashboard` is rendered due to the `index` property., when `index` is used the URL will not chnage to any thing. To use nested routing `<Outlet/>` is required inside the `Layout` component as it will render the inner pages.
+
+Layout page conatins navbar, and side bar which denotes the pages and Outlet to render them as place holder. The login page is created using controlled input.
+
+#### Routing
+
+`Route` will render a component based on the URL.
+```
+<Route path='/about' element={<Anout/>}/>
+```
+
+`Link` use for nagivation without refreshing the page.
+```
+<Link to='/about'>Go to About</Link>
+```
+
+`NavLink` is similar to link but it adds styling to the active link (current page). End will match the exact URL else `/about/data` will be same for `/about`
+```
+<NavLink to='/about' end={true} className={({isActive})=>(isActive?"active-class":"")}>Go to About</NavLink>
+```
+
+`useNavigate()` is used for navigation to another route and is useful when we perform some logic before navigation. Navigation is triggered by logic.
+
+
 ## Git Setup
 
 `git init` is used to initialize a new git repository inside the current working repository.
@@ -154,3 +204,6 @@ git branch -M main -> Forcefully remane the current branch to main (current bran
 git remote add origin https://github.com/user/repo.git -> Once per repo to link origin (Only point origin to URL)
 git push -u origin main -> For tracking the remote repo, setting upstream and pushing changes (specific branch)
 ```
+
+## Project Setup
+
