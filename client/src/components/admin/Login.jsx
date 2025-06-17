@@ -1,10 +1,28 @@
 import React, { useState } from "react";
+import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
+  const {axios,setToken}=useAppContext();
+  
+  const [email, setEmail] = useState("admin@example.com");
+  const [password, setPassword] = useState("adminpassword");
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const {data}=await axios.post('/api/admin/login',{email,password});
+      if(data.success){
+        setToken(data.token);
+        localStorage.setItem('token',data.token);
+        axios.defaults.headers.common['Authorization']=data.token;
+      }
+      else{
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -29,7 +47,7 @@ function Login() {
                 onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 required
-                placeholder="your email id"
+                placeholder="admin@example.com"
                 className="border-b-2 border-gray-300 p-2 outline-none mb-6"
                 value={email}
               ></input>
@@ -40,7 +58,7 @@ function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 required
-                placeholder="your password"
+                placeholder="adminpassword"
                 className="border-b-2 border-gray-300 p-2 outline-none mb-6"
                 value={password}
               ></input>

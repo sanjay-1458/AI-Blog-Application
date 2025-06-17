@@ -1,4 +1,4 @@
-# AI Powered Blog Applicaton 
+# AI Powered Blog Applicaton
 
 ## Client / Frontend
 
@@ -48,7 +48,7 @@ We can either use `<Link>` or `useNavigate()`. When we want to directly naviagte
 
 ### Home Page
 
-Home page contains navbar which contains logo and login button, header for displaying the into for blogging and a form for searching the  blogs.
+Home page contains navbar which contains logo and login button, header for displaying the into for blogging and a form for searching the blogs.
 Then a filter for searching the blog from the blog list.
 
 #### Header
@@ -72,6 +72,7 @@ In the `header` component the baground image position is set to `relative`.
     className="absolute -top-50 -z-1 opacity-50"
 />
 ```
+
 #### Blog List
 
 Blog list is divided into 2 segments one for filetring the blog based on `All`, `Technology`, `Startup`, `Lifestyle` and `Finance`, and other the blog list content.
@@ -83,6 +84,7 @@ Now we set the active state as `All` and when we click a filter we chnage the st
 When user clicks in the blog item they are redirected to blog page with URL as `/blog/${id of the blog}`.
 
 So the route changes accordingly to handle dynamic id.
+
 ```
 <Route path='/blog/:id' element={<Blog/>}/>
 ```
@@ -107,7 +109,6 @@ User can subscribe to get the latest blog using their emaid id.
 
 Footer contains copyright and 4 `div` for presenting the links and the website logo.
 
-
 ### Blog Page
 
 For displaying the content of the blog, the data is stored in `blog_data` which is array of objects. And when we click on any blog items we are navigated to the `Blog` page where the URL is use to diaply the blog as URL is same as `_id`. Fetching the id from URL `const {id}=useParams();` and using a state `data` to store the content of the particular blog `const [data,setData]=useState(null);`
@@ -121,6 +122,7 @@ Used moment package for formatting the date `<p>Published on {Moment(data.create
 Admin has access to 4 pages `Dashboard`, `Add blogs`, `Blog list`, `Comments` with additional login component. Each 4 pages share the same navbar thus create a centralized layout for the same.
 
 Now a nested routing is implemented for all admin pages.
+
 ```
 <Routes>
   <Route path='/' element={<Home/>}/>
@@ -139,6 +141,7 @@ If we visit the `/admin` then `Layout` is rendered and inside layout `Dashboard`
 Layout page conatins navbar, and side bar which denotes the pages and Outlet to render them as place holder. The login page is created using controlled input. And the table for comments is used as component due to their repetetive need. `quill` module is used for rich text in the `Blog description` where we use AI to generate the content.
 
 Used the state `category` to save the blog category from the dropdown.
+
 ```
 <select
   onChange={(e) => setCategory(e.target.value)}
@@ -160,22 +163,33 @@ Used the state `category` to save the blog category from the dropdown.
 #### Routing
 
 `Route` will render a component based on the URL.
+
 ```
 <Route path='/about' element={<Anout/>}/>
 ```
 
 `Link` use for nagivation without refreshing the page.
+
 ```
 <Link to='/about'>Go to About</Link>
 ```
 
 `NavLink` is similar to link but it adds styling to the active link (current page). End will match the exact URL else `/about/data` will be same for `/about`
+
 ```
 <NavLink to='/about' end={true} className={({isActive})=>(isActive?"active-class":"")}>Go to About</NavLink>
 ```
 
 `useNavigate()` is used for navigation to another route and is useful when we perform some logic before navigation. Navigation is triggered by logic.
 
+### Connect to Backend
+
+After writing all routes for backedn application now we need to send data from frontend to a specefic backend URL so we set the environmental variable in the frontend
+`VITE_BASE_URL=http://localhost:3000`.
+
+### Setting Context File
+
+If we want to pass data from parent to child we use props, but if we pass props from toplevel component to bottom level then props are passed through those components which they dont use. So we create a global state for storing the data and using them without passing props manullay in each level.
 
 ## Server / Backend
 
@@ -187,11 +201,10 @@ Installing Nodemon as it will automatically restarts the Node.js application whe
 
 ### Server.js
 
-
-
 #### Module
 
 In Node.js their are two types of module system:
+
 1. Common JS -> Traditional module
 2. ES Module -> Moder module part of ES6
 
@@ -206,7 +219,6 @@ const exp=require('./expFile')
 log(exp.function1());
 ```
 
-
 `ES Module` in ESM weuse `import` and `export` and it is similar to how modules are handled in client-side and it is asynchrounous in nature allowing for optimization by JS engine
 
 ```
@@ -219,6 +231,7 @@ import funstion2, {function1} from './expFile.js';
 ```
 
 Inside `package.json` we do `"type":"commonjs"` to `"type":"module"`, now adding `nodemon` in script so the command will be `npm run server`.
+
 ```
 "scripts": {
     "server":"nodemon server.js",
@@ -235,6 +248,7 @@ Middleware is a function which lies between request response cycle and it can pr
 In Express.js `app.use()` is a middleware function which apply middlware to application, `app.use([path],callback(s))` those callback(s) will execute on every request that matches the path if there is no path the middleware will be applied to every request.
 
 To enable CORS we use `app.use(cors())`, it is needed because by default browser block request made from one domain to another unless server explictly mention it, by using `app.use(cors())` we automaticlly enable CORS for all domain and all routes in the applocation thus any domain can make request to server, to customize CORS we can do.
+
 ```
 app.use(cors({
   origin:'domain', -> only allow request from this domain
@@ -245,6 +259,7 @@ app.use(cors({
 #### Database Connection
 
 Generate `MONGODB_URI` from MongoDB Atlas and set network access to allow every domain, using mongoose to connect with MongoDB database and the database name is `/blogapp`
+
 ```
 import mongoose from 'mongoose'
 
@@ -263,10 +278,42 @@ const connectDB=async()=>{
 Defines how your data looks and behave in MongoDB using Mongoose, that is define schema and structure.
 Created an `adminController.js` which recieves the {email & password} from `req.body` and generate a jwt using `jwt.sign({payload},JWT_SECRET)`, which will then become as `HEADER.PAYLOAD.SIGNATURE` where header has information about the signing algorithm, payload is the data and signature is the encrytion using jwt secret.
 
+##### Example of Blog Model
+
+```
+// Schema -> Model -> Create -> Save
+
+// Creating a new schema (structure of the document) for post
+const postSchema=new mongoose.Schema({
+    title:{
+        type:String,
+        required:true
+    },
+    content:{
+        type:String,
+        required:true
+    }
+})
+
+
+// Model is the actual object we use to interact with database
+// Creating the model from the schema
+const Post=mongoose.model('Post',postSchema);
+
+
+// In controller file for performing operation on data
+// Operations Post.find(), Post.create(),...
+const newPost=new Post({title,content});
+newPost.save();
+
+or
+
+await Post.create({title,content})
+```
+
 #### Controllers
 
-Functions that get data from models and return it in a response, by handling request logic
-
+Functions that get data from models and return it in a response, by handling request logic. After creating the Schema and Model of the Blog we use the `blogController` for performing actions on the blog data, it will recieve blog data from `req.body.blog` and image from `req.image`, now we use ImageKit.io for storing the image as it provides CDN delivery and image optimization
 
 #### Routes
 
@@ -275,7 +322,39 @@ Every request comming with `/admin` is routed to `adminRoutes.js` using `app.use
 
 #### Middleware
 
-Run code before request goes to controller
+Run code before request goes to controller, we have used multer middleware to parse the image and add it into `req.file` and another middleware to protect this route so only admin can post the image.
+
+`auth.js` file is user for authorization where we check that the current request is send by admin or not. The request header contains the authorization in format of `Authorization: Bearer <token>`, so we will fetch the token form `req.headers.authorization` and use `jwt.verify(token, SECRET)` to verify the user.
+
+#### Seeding
+
+After the frontend integrates with backend, the data from assets will not be displayed so we need to update those data in mongdb atlas so a `seed.js` file is created for updating blogs and comments in the database.
+
+#### Manuall Testing
+
+We can create a new file `test.http` at the root level along with REST client extension to test the endpoints.
+
+```
+### Ping test
+
+# Send Request
+GET http://localhost:3000/
+
+
+### Admin Login
+
+# Send Request
+POST http://localhost:3000/api/admin/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "adminpassword"
+}
+
+```
+
+Thus getting `res.status(200).json({success:true,token})` the status code along with the json web token is VS Code itself
 
 ## Git Setup
 
@@ -299,6 +378,7 @@ To link local repo to remote use this once per repo.
 ```
 git remote add orgin https://github.com/user/repo.git
 ```
+
 Now every time when we do changes and want to push it to the remote we do following to keep the track of the current remote and push the changes.
 
 ```
@@ -309,7 +389,7 @@ git push origin main
 
 If we have different name for local and remote branch than `git push origin local_branch:remote_branch`.
 
-Now if we want to set the upstream and just use simple `git push`, then we set the upstream using `-u` flag. It means first time upload my changes  and then keep track of the current repository for all future scenarios.
+Now if we want to set the upstream and just use simple `git push`, then we set the upstream using `-u` flag. It means first time upload my changes and then keep track of the current repository for all future scenarios.
 
 To check the upstream is set or not use. `git branch -vv`.
 
@@ -325,4 +405,3 @@ git push -u origin main -> For tracking the remote repo, setting upstream and pu
 ```
 
 ## Project Setup
-

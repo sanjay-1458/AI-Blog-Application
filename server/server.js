@@ -3,6 +3,7 @@ import 'dotenv/config';
 import cors from 'cors';
 import connectDB from './config/db.js';
 import adminRouter from './routes/adminRoute.js';
+import blogRouter from './routes/blogRoutes.js';
 
 
 // Instance of application is created
@@ -23,6 +24,8 @@ app.get('/',(req,res)=>{
 })
 
 app.use('/api/admin',adminRouter);
+app.use('/api/blog',blogRouter)
+
 
 // Fetching data from `.env` to `process.env`
 const PORT=process.env.PORT || 3000;

@@ -9,3 +9,20 @@ Content-Type: application/json
   "email": "admin@example.com",
   "password": "adminpassword"
 }
+
+### Add Blog Post with Image
+POST http://localhost:3000/api/blog/add
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNzUwMTYxOTQwfQ.4ubmZO5hd9T0LtRJrroNPTls3tq6z-Qk3tC3j4f7rWo
+
+Content-Type: multipart/form-data
+
+@blog={
+  "title": "Test Blog Post",
+  "subTitle": "Test Blog SubTitle",
+  "description": "Test Blog Description",
+  "category": "startup",
+  "isPublished": true
+}
+@image=C:\Users\dell5\OneDrive\Desktop\New folder\client\src\assets\blog_pic_1.png
+
+
