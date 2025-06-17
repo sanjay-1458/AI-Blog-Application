@@ -242,6 +242,40 @@ app.use(cors({
 }))
 ```
 
+#### Database Connection
+
+Generate `MONGODB_URI` from MongoDB Atlas and set network access to allow every domain, using mongoose to connect with MongoDB database and the database name is `/blogapp`
+```
+import mongoose from 'mongoose'
+
+const connectDB=async()=>{
+    try{
+        await mongoose.connect(`${process.env.MONGODB_URI}/blogapp`)
+    }
+    catch(error){
+        console.log(error.message);
+    }
+}
+```
+
+#### Models
+
+Defines how your data looks and behave in MongoDB using Mongoose, that is define schema and structure.
+Created an `adminController.js` which recieves the {email & password} from `req.body` and generate a jwt using `jwt.sign({payload},JWT_SECRET)`, which will then become as `HEADER.PAYLOAD.SIGNATURE` where header has information about the signing algorithm, payload is the data and signature is the encrytion using jwt secret.
+
+#### Controllers
+
+Functions that get data from models and return it in a response, by handling request logic
+
+
+#### Routes
+
+Connect URLs to the correct controller functions, by mapping URLs to controller function.
+Every request comming with `/admin` is routed to `adminRoutes.js` using `app.use('/admin',adminRoute)`, then the `adminRoute` is responsible for routing the request to their controller.
+
+#### Middleware
+
+Run code before request goes to controller
 
 ## Git Setup
 

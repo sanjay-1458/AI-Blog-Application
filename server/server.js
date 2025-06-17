@@ -1,11 +1,16 @@
 import express from 'express'
 import 'dotenv/config';
 import cors from 'cors';
+import connectDB from './config/db.js';
+import adminRouter from './routes/adminRoute.js';
 
 
 // Instance of application is created
 const app=express();
 
+
+// Connection for MongoDB
+connectDB();
 
 // Middleware
 app.use(cors());
@@ -16,6 +21,8 @@ app.use(express.json());
 app.get('/',(req,res)=>{
     res.send('work');
 })
+
+app.use('/api/admin',adminRouter);
 
 // Fetching data from `.env` to `process.env`
 const PORT=process.env.PORT || 3000;
