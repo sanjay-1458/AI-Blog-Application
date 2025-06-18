@@ -1,5 +1,13 @@
 # AI Powered Blog Applicaton
 
+## Deployment
+
+Deploy backend and frontend on the vercel:
+#### Backend:
+https://ai-blog-application-server.vercel.app
+#### Frontend:
+https://ai-blog-application.vercel.app/
+
 ## Client / Frontend
 
 ### Routing
@@ -85,6 +93,13 @@ When user clicks in the blog item they are redirected to blog page with URL as `
 
 So the route changes accordingly to handle dynamic id.
 
+<img
+  src="https://github.com/user-attachments/assets/aa80c1f2-22cc-4060-a2a7-8d470109aa3a"
+  alt="My screenshot"
+  width="500"
+/>
+
+
 ```
 <Route path='/blog/:id' element={<Blog/>}/>
 ```
@@ -159,6 +174,38 @@ Used the state `category` to save the blog category from the dropdown.
   })}
 </select>
 ```
+
+##### Dashboard
+
+<img
+  src="https://github.com/user-attachments/assets/8c8ea639-0c53-444d-b58a-95267c6a23c5"
+  alt="My screenshot"
+  width="500"
+/>
+
+##### Add Blog
+
+<img
+  src="https://github.com/user-attachments/assets/ff7730cd-9fce-4bae-8597-28943492f8a1"
+  alt="My screenshot"
+  width="500"
+/>
+
+##### Blog List
+
+<img
+  src="https://github.com/user-attachments/assets/ec95b18c-f85a-43b6-884f-32c7fbc0fea5"
+  alt="My screenshot"
+  width="500"
+/>
+
+##### Comment
+
+<img
+  src="https://github.com/user-attachments/assets/3082b8dd-794f-461d-b683-21782f81965c"
+  alt="My screenshot"
+  width="500"
+/>
 
 #### Routing
 
@@ -404,9 +451,43 @@ git remote add origin https://github.com/user/repo.git -> Once per repo to link 
 git push -u origin main -> For tracking the remote repo, setting upstream and pushing changes (specific branch)
 ```
 
-## Deployment
 
-Deploy backend and frontedn on the vercel:
-https://ai-blog-application.vercel.app/
 
 ## Project Setup
+
+### Step 1. Clone the repo
+`git clone https://github.com/sanjay-1458/AI-Blog-Application.git`
+
+### Step 2. Move inside the root
+`cd AI-Blog-Application`
+
+### Step 3. Setup frontend
+Setup the `.env` file here we set port 3000 where backedn runs, if another process is running at that port than change the port.
+```
+VITE_BASE_URL=http://localhost:3000
+```
+```
+cd client
+npm install
+npm run dev
+```
+
+### Step 4. Setup backend
+Setup the `.env` file in the server repo
+```
+PORT=3000
+JWT_SECRET=
+ADMIN_EMAIL=
+ADMIN_PASSWORD=
+MONGODB_URI=
+IMAGEKIT_PUBLIC_KEY=
+IMAGEKIT_PRIVATE_KEY=
+IMAGEKIT_URL_ENDPOINT=
+GEMINI_API_KEY=
+```
+```
+cd server
+npm install
+node server.js
+```
+
