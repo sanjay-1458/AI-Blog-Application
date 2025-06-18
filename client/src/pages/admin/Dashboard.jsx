@@ -21,9 +21,12 @@ function Dashboard() {
         setDashboardData(data.dashboardData);
       }
       else{
+        console.log("FetchDashboard: Failed response", data);
+        
         toast.error(data.message);
       }
     } catch (error) {
+      console.log("FetchDashboard: Caught error", error);
       toast.error(error.message);
     }
   };

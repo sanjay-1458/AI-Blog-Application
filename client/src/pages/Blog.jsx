@@ -19,8 +19,11 @@ function Blog() {
     try{
       const {data}=await axios.get(`/api/blog/${id}`);
       data.success?setData(data.blog):toast.error(data.message)
+      console.log("FetchBlogData: Success or failure response", data);
+      
     }
     catch(error){
+      console.log("FetchBlogData: Caught error", error);
       toast.error(error.message)
     }
   };
@@ -28,8 +31,10 @@ function Blog() {
     try{
       const {data}=await axios.post(`/api/blog/comments`,{blogId:id});
       data.success?setComment(data.comments):toast.error(data.message)
+      console.log("FetchComments: Success or failure response", data);
     }
     catch(error){
+      console.log("FetchComments: Caught error", error);
      toast.error(error.message)
     }
   }
@@ -43,9 +48,13 @@ function Blog() {
         setContent('');
       }
       else{
+        console.log("AddComment: Failed response", data);
+        
         toast.error(data.message);
       }
     } catch (error) {
+        console.log("AddComment: Caught error", error);
+      
       toast.error(error.message);
     }
   }

@@ -16,11 +16,15 @@ function Login() {
         setToken(data.token);
         localStorage.setItem('token',data.token);
         axios.defaults.headers.common['Authorization']=data.token;
+        console.log("HandleSubmit: Success token is genearted");
       }
       else{
+        console.log("HandleSubmit: Failed response", data);
+        
         toast.error(data.message);
       }
     } catch (error) {
+      console.log("HandleSubmit: Caught error", error);
       toast.error(error.message);
     }
   };

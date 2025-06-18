@@ -11,7 +11,9 @@ function Comment() {
     try {
       const {data}=await axios.get('/api/admin/comments');
       data.success?setComments(data.comments):toast.error();
+    console.log("FetchComments: Success or failure response", data);
     } catch (error) {
+      console.log("FetchComments: Caught error", error);
       toast.error(error.message);
     }
   }

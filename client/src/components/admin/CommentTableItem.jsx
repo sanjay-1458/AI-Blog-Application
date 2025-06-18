@@ -12,12 +12,15 @@ function CommentTableItem({comment,fetchComment}) {
             const {data}=await axios.post('/api/admin/approve-comment',{id:_id});
             if(data.success){
                 toast.success(data.message);
+                console.log("ApproveComment: Success", data);
                 fetchComment()
             }
             else{
+                console.log("ApproveComment: Failed response", data);
                 toast.error(data.message);
             }
         } catch (error) {
+            console.log("ApproveComment: Caught error", error);
             toast.error(error.message);
         }
     }
@@ -28,12 +31,18 @@ function CommentTableItem({comment,fetchComment}) {
             const {data}=await axios.post('/api/admin/delete-comment',{id:_id});
             if(data.success){
                 toast.success(data.message);
+                console.log("DeleteComment: Success", data);
                 fetchComment()
             }
             else{
+                console.log("DeleteComment: Failed response", data);
+                
                 toast.error(data.message);
             }
         } catch (error) {
+            
+                console.log("DeleteComment: Caught error", error);
+                
             toast.error(error.message);
         }
     }

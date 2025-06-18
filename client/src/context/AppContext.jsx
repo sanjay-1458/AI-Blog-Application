@@ -20,7 +20,11 @@ export const AppProvider = ({ children }) => {
       try {
         const {data}=await axios.get('/api/blog/all')
         data.success?setBlogs(data.blogs):toast.error(data.message);
+        console.log("FetchBlogs: Success or failure response", data);
+        
       } catch (error) {
+        console.log("FetchBlogs: Caught error", error);
+        
         toast.error(error.message);
       }
     }

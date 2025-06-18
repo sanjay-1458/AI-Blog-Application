@@ -3,12 +3,12 @@ import { assets, blogCategories } from "../../assets/assets";
 import Quill from "quill";
 import { useAppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
-import {parse} from 'marked';
+import { parse } from "marked";
 
 function AddBlog() {
-  const { axios } = useAppContext();
+  const { axios, fetchBlogs } = useAppContext();
   const [isAdding, setIsAdding] = useState(false);
-  const [loading,setLoading]=useState(false);
+  const [loading, setLoading] = useState(false);
   const editorRef = useRef(null);
   const quillRef = useRef(null);
 
@@ -41,32 +41,39 @@ function AddBlog() {
         setSubTitle("");
         quillRef.current.root.innerHTML = "";
         setCategory("Startup");
+         console.log("Data Added in Blog List", data);
       } else {
+        console.log("ImageSubmitHandler: Failed response", data);
         toast.error(data.message);
       }
     } catch (error) {
+      console.log("ImageSubmitHandler: Caught error", error);
       toast.error(error.message);
     } finally {
       setIsAdding(false);
     }
   };
   const generateContent = async () => {
-    if(!title) return toast.error("Please enter the title")
-      try {
-        setLoading(true);
-        const {data}=await axios.post('/api/blog/generate',{prompt:title});
-        if(data.success){
-          quillRef.current.root.innerHTML=parse(data.content);
-        }
-        else{
-          toast.error(data.message);
-        }
-      } catch (error) {
-        toast.error(error.message);
+    if (!title) return toast.error("Please enter the title");
+    try {
+      setLoading(true);
+      const { data } = await axios.post("/api/blog/generate", {
+        prompt: title,
+      });
+      if (data.success) {
+        quillRef.current.root.innerHTML = parse(data.content);
+        console.log('Data is generated');
+      } else {
+        console.log("GenerateContent: Failed response", data);
+
+        toast.error(data.message);
       }
-      finally{
-        setLoading(false);
-      }
+    } catch (error) {
+      console.log("GenerateContent: Caught error", error);
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
   useEffect(() => {
     if (!quillRef.current && editorRef.current) {
@@ -115,14 +122,14 @@ function AddBlog() {
         <p className="mt-4">Blog Description</p>
         <div className="max-w-lg h-74 pb-16 sm:pb-10 pt-2 relative">
           <div ref={editorRef}></div>
-        
-          {
-            loading && (<div className="absolute right-0 top-0 bottom-0 left-0 flex-item-center justify-center bg-black/10 mt-2">
+
+          {loading && (
+            <div className="absolute right-0 top-0 bottom-0 left-0 flex-item-center justify-center bg-black/10 mt-2">
               <div className="w-8 h-8 rounded-full border-2 border-t-white animate-spin"></div>
             </div>
-            )
-          }
-          <button disabled={loading}
+          )}
+          <button
+            disabled={loading}
             className="absolute bottom-1 right-2 ml-2 text-xs bg-black/70 px-4 py-1.5 rounded hover:underline cursor-pointer text-white"
             type="button"
             onClick={generateContent}

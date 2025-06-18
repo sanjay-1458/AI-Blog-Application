@@ -16,11 +16,14 @@ function BlogTableItem({ blog, fetchBlogs, index }) {
       const { data } = await axios.post("/api/blog/delete", { id: blog._id });
       if (data.success) {
         toast.success(data.message);
+        console.log("BlogTableItem: Delete success", data);
         await fetchBlogs();
       } else {
         toast.error(data.message);
+        console.log("BlogTableItem: Delete failed (API response)", data);
       }
     } catch (error) {
+      console.log("BlogTableItem: Delete error (Exception)", error);
       toast.error(error.message);
     }
   };
@@ -31,11 +34,14 @@ function BlogTableItem({ blog, fetchBlogs, index }) {
       });
       if (data.success) {
         toast.success(data.message);
+        console.log("TogglePublish: Success", data);
         await fetchBlogs();
       } else {
+        console.log("TogglePublish: Failed response", data);
         toast.error(data.message);
       }
     } catch (error) {
+      console.log("TogglePublish: Failed response", data);
       toast.error(error.message);
     }
   };
