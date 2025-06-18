@@ -124,6 +124,11 @@ User can subscribe to get the latest blog using their emaid id.
 
 Footer contains copyright and 4 `div` for presenting the links and the website logo.
 
+<img
+  src="https://github.com/user-attachments/assets/1eeabaf3-d2d0-48d4-ad9f-dbda76b3db36"
+  alt="My screenshot"
+  width="500"
+/>
 ### Blog Page
 
 For displaying the content of the blog, the data is stored in `blog_data` which is array of objects. And when we click on any blog items we are navigated to the `Blog` page where the URL is use to diaply the blog as URL is same as `_id`. Fetching the id from URL `const {id}=useParams();` and using a state `data` to store the content of the particular blog `const [data,setData]=useState(null);`
