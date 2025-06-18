@@ -404,4 +404,9 @@ git remote add origin https://github.com/user/repo.git -> Once per repo to link 
 git push -u origin main -> For tracking the remote repo, setting upstream and pushing changes (specific branch)
 ```
 
+## Deployment
+
+Deploy backend and frontedn on the vercel:
+https://ai-blog-application.vercel.app/
+
 ## Project Setup
